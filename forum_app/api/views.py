@@ -4,6 +4,7 @@ from forum_app.models import Like, Question, Answer
 from .serializers import QuestionSerializer, AnswerSerializer, LikeSerializer
 from .permissions import IsOwnerOrAdmin, CustomQuestionPermission
 from .throttling import QuestionThrottle, QuestionGetThorttle, QuestionPostThrottle
+from .paginations import LargeResultSetPagination
 from django_filters.rest_framework import DjangoFilterBackend
 
 class QuestionViewSet(viewsets.ModelViewSet):
@@ -59,6 +60,7 @@ class LikeViewSet(viewsets.ModelViewSet):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
     permission_classes = [IsOwnerOrAdmin]
+    pagination_class = LargeResultSetPagination
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
